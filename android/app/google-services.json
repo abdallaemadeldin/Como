@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "63048752565",
+    "project_id": "comotask-e7241",
+    "storage_bucket": "comotask-e7241.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63048752565:android:c0e5e82bff5dbe4c060dfc",
+        "android_client_info": {
+          "package_name": "com.comotask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63048752565-mvaicc3tmggsi121e7777fn4liqovov1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBERU-dK7U7bw9QnG1noNAecVXre8Wq6e0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63048752565-mvaicc3tmggsi121e7777fn4liqovov1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
