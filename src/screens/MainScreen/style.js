@@ -76,5 +76,12 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    permissionLabel: {
+        fontSize: 16,
+        color: '#000',
+        marginTop: 50,
+        marginHorizontal: 20,
+        textAlign: 'center'
     }
 });

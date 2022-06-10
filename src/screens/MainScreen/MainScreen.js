@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TextInput, View, Modal, TouchableOpacity, Text, Dimensions, ActivityIndicator } from 'react-native';
+import { SafeAreaView, TextInput, View, Modal, TouchableOpacity, Text, Dimensions, ActivityIndicator, Linking } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,7 +20,8 @@ const MainScreen = () => {
         overlayLoading,
         actionStyle,
         actionsHolder,
-        cameraStyle
+        cameraStyle,
+        permissionLabel
     } = styles;
     const {
         animationRef,
@@ -30,6 +31,7 @@ const MainScreen = () => {
         visible,
         isFlashOn,
         loading,
+        cameraPermission,
         toggleFlash,
         showModal,
         hideModal,
@@ -40,9 +42,11 @@ const MainScreen = () => {
     const actions = [{
         icon: 'close',
         onPress: hideModal,
+        label: 'close'
     }, {
         icon: isFlashOn === 0 ? 'flash-off' : 'flash',
-        onPress: toggleFlash
+        onPress: toggleFlash,
+        label: 'flash'
     }];
 
     return (
@@ -68,6 +72,7 @@ const MainScreen = () => {
                 <View style={actionsHolder}>
                     {
                         actions.map(action => {
+                            if (cameraPermission !== 'granted' && action.label === 'flash') return;
                             return (
                                 <TouchableOpacity style={actionStyle} onPress={action.onPress}>
                                     <Icon name={action.icon} size={24} color='#fff' />
@@ -77,19 +82,22 @@ const MainScreen = () => {
                         })
                     }
                 </View>
-                <RNCamera
-                    style={cameraStyle}
-                    onBarCodeRead={onScanSuccess}
-                    captureAudio={false}
-                    flashMode={isFlashOn}
-                    onCameraReady={() => animationRef?.current?.play() && animationRef?.current?.play()}
-                >
-                    <LottieView
-                        source={require('../../assets/qrcode-reader.json')}
-                        loop
-                        ref={animationRef}
-                        style={{ width: QRCODE_WIDTH, height: QRCODE_WIDTH }} />
-                </RNCamera>
+                {cameraPermission === 'granted' ?
+                    <RNCamera
+                        style={cameraStyle}
+                        onBarCodeRead={onScanSuccess}
+                        captureAudio={false}
+                        flashMode={isFlashOn}
+                        onCameraReady={() => animationRef?.current?.play() && animationRef?.current?.play()}
+                    >
+                        <LottieView
+                            source={require('../../assets/qrcode-reader.json')}
+                            loop
+                            ref={animationRef}
+                            style={{ width: QRCODE_WIDTH, height: QRCODE_WIDTH }} />
+                    </RNCamera>
+                    :
+                    <Text style={permissionLabel} onPress={Linking.openSettings}>Please enable the camera permission to continue</Text>}
             </Modal>
 
             {loading && <View style={overlayLoading}>

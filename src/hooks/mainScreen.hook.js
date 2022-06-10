@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import axios from 'axios';
 import { v4 } from 'uuid';
 import Firestore from '@react-native-firebase/firestore';
+import { check, PERMISSIONS } from 'react-native-permissions';
 
 export const useMainScreen = () => {
     const animationRef = useRef();
@@ -12,6 +13,7 @@ export const useMainScreen = () => {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isFlashOn, setIsfFlashOn] = useState(0);
+    const [cameraPermission, setCameraPermission] = useState('');
 
     const isDisabled = error !== '' || fullname === '';
 
@@ -66,7 +68,14 @@ export const useMainScreen = () => {
         fetchContent(data);
     }
 
-    const showModal = () => setVisible(true);
+    const showModal = () => {
+        if (Platform.OS === 'android') {
+            check(PERMISSIONS.ANDROID.CAMERA).then(setCameraPermission);
+        } else if (Platform.OS === 'ios') {
+            check(PERMISSIONS.IOS.CAMERA).then(setCameraPermission);
+        }
+        setVisible(true);
+    }
     const hideModal = () => setVisible(false);
 
     const toggleFlash = () => setIsfFlashOn(st => st === 0 ? 2 : 0);
@@ -79,6 +88,7 @@ export const useMainScreen = () => {
         visible,
         isFlashOn,
         loading,
+        cameraPermission,
         toggleFlash,
         showModal,
         hideModal,
