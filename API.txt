@@ -1,0 +1,15 @@
+const functions = require("firebase-functions");
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+
+exports.scans = functions.https.onRequest(async (req, res) => {
+    const docId = req.query.user_id;
+    const events = await admin.firestore().collection('Users').doc(docId).get();
+
+    if (events.exists()) {
+        res.json({ result: events.data(), statusCode: 200 });
+    } else {
+        res.json({ message: "No records for provided user", statusCode: 404 });
+    }
+});
