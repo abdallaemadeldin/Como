@@ -2,11 +2,6 @@ name: Deploy-Android-TEST
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: Environment
-        required: true
-        default: master
     
 env:
   APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
